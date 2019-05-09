@@ -26,7 +26,10 @@ object Main {
         .create()!!
 
     @JvmStatic fun main(args: Array<String>){
-       parsePage("7679071/af4e4f87")
+
+        SAVE_PATH.toFile().mkdir()
+
+        parsePage("7679071/af4e4f87")
     }
 
     private fun parsePage(id : String){
@@ -39,10 +42,10 @@ object Main {
 
         val fileName = "${id.replace("/", "_")}.json"
         val file = SAVE_PATH.resolve(fileName).toFile()
-        val fileWriter = FileWriter(file)
 
-        if(file.createNewFile())
-            println("Created new file '$file'!")
+        file.createNewFile()
+
+        val fileWriter = FileWriter(file)
 
         G_SON.toJson(results, fileWriter)
 
