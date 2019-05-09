@@ -1,8 +1,7 @@
-package com.stan.scraper.page.request
+package com.stan.scraper.page.comment
 
-import com.stan.scraper.cache.CommentsCache
 import com.stan.scraper.page.PageRequest
-import com.stan.scraper.cache.CommentsCache.Comment
+import com.stan.scraper.page.comment.CommentsCache.Comment
 import org.jsoup.nodes.Document
 
 /**

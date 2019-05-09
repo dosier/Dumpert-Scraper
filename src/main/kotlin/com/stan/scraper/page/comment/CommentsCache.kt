@@ -1,4 +1,4 @@
-package com.stan.scraper.cache
+package com.stan.scraper.page.comment
 
 import com.google.gson.annotations.Expose
 

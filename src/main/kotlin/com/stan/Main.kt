@@ -2,8 +2,8 @@ package com.stan
 
 import com.google.gson.GsonBuilder
 import com.stan.scraper.DumpScraper
-import com.stan.scraper.page.request.CommentsPageRequest
-import com.stan.scraper.cache.CommentsCache
+import com.stan.scraper.page.comment.CommentsPageRequest
+import com.stan.scraper.page.comment.CommentsCache
 import java.io.FileWriter
 import java.nio.file.Paths
 
