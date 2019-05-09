@@ -36,8 +36,8 @@ class Scraper<T> {
             submitNewURL(request.toURL(baseUrl), request)
 
         while (scraping())
+            println("Scraping...")
 
-        println("Parsed " + data.size + " pages")
         return data
     }
 
