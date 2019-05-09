@@ -9,7 +9,7 @@ import com.google.gson.annotations.Expose
  * @since   2019-05-09
  * @version 1.0
  */
-class CommentsCache {
+class Comments {
 
     @Expose lateinit var topComment : Comment
     @Expose private val comments = ArrayList<Comment>()

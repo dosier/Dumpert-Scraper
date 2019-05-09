@@ -1,7 +1,7 @@
 package com.stan.scraper.page.comment
 
 import com.stan.scraper.page.PageRequest
-import com.stan.scraper.page.comment.CommentsCache.Comment
+import com.stan.scraper.page.comment.Comments.Comment
 import org.jsoup.nodes.Document
 
 /**
@@ -11,14 +11,14 @@ import org.jsoup.nodes.Document
  * @since   2019-05-09
  * @version 1.0
  */
-class CommentsPageRequest(page : String) : PageRequest<CommentsCache>(page) {
+class CommentsPageRequest(page : String) : PageRequest<Comments>(page) {
 
-    override fun parse(doc: Document): CommentsCache {
+    override fun parse(doc: Document): Comments {
 
         /*
          * Creat comments cache to store parsing results.
          */
-        val commentCache = CommentsCache()
+        val commentCache = Comments()
 
         val commentEntries = doc.select(COMMENT_LIST)
 
