@@ -1,11 +1,16 @@
 package com.stan.scraper
 
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import java.io.FileWriter
+import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
- * TODO: add documentation
+ * Represents a serializer object, can be used to serialize scrape results.
+ *
+ * @see SAVE_PATH   the base [Path] to store serialized files at.
+ * @see GSON        the [Gson] implementation used to format the data.
  *
  * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
  * @since   2019-05-10
@@ -15,7 +20,7 @@ object Serializer {
 
     private val SAVE_PATH = Paths.get("comments")!!
 
-    private val G_SON = GsonBuilder()
+    private val GSON = GsonBuilder()
         .setPrettyPrinting()
         .excludeFieldsWithoutExposeAnnotation()
         .create()!!
@@ -36,7 +41,7 @@ object Serializer {
 
         val fileWriter = FileWriter(file)
 
-        G_SON.toJson(results, fileWriter)
+        GSON.toJson(results, fileWriter)
 
         fileWriter.flush()
         fileWriter.close()
