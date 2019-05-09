@@ -1,14 +1,16 @@
 package com.stan
 
 import com.google.gson.GsonBuilder
-import com.stan.scraper.DumpScraper
-import com.stan.scraper.page.comment.CommentsPageRequest
+import com.stan.scraper.Scraper
+import com.stan.scraper.page.comment.CommentsPageParser
 import com.stan.scraper.page.comment.Comments
 import java.io.FileWriter
 import java.nio.file.Paths
 
 /**
  * This is the entry point of the application.
+ *
+ * TODO: add automatic page id listing (maybe use video navigation).
  *
  * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
  * @since   2019-05-09
@@ -17,9 +19,9 @@ import java.nio.file.Paths
 object Main {
 
     /**
-     * A [DumpScraper] targeting [Comments].
+     * A [Scraper] targeting [Comments].
      */
-    private val SCRAPER = DumpScraper<Comments>()
+    private val SCRAPER = Scraper<Comments>()
 
     private val SAVE_PATH = Paths.get("comments")!!
 
@@ -27,6 +29,8 @@ object Main {
         .setPrettyPrinting()
         .excludeFieldsWithoutExposeAnnotation()
         .create()!!
+
+    private const val BASE_URL = "https://comments.dumpert.nl/"
 
     @JvmStatic fun main(args: Array<String>){
 
@@ -42,9 +46,9 @@ object Main {
      */
     private fun parsePage(id : String){
 
-        val request = CommentsPageRequest("embed/$id/comments/")
+        val request = CommentsPageParser("embed/$id/comments/")
 
-        val results = SCRAPER.scrape("https://comments.dumpert.nl/", listOf(request))
+        val results = SCRAPER.scrape(BASE_URL, listOf(request))
 
         results.forEach { it.sortByKudos() }
 

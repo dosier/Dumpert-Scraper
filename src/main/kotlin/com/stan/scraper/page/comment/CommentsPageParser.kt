@@ -1,17 +1,19 @@
 package com.stan.scraper.page.comment
 
-import com.stan.scraper.page.PageRequest
+import com.stan.scraper.page.PageParser
 import com.stan.scraper.page.comment.Comments.Comment
 import org.jsoup.nodes.Document
 
 /**
- * TODO: add documentation
+ * Represents a [PageParser] implementation for [Comments].
+ *
+ * @param urlAppendix the value appended to the base url (to target a specific page).
  *
  * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
  * @since   2019-05-09
  * @version 1.0
  */
-class CommentsPageRequest(page : String) : PageRequest<Comments>(page) {
+class CommentsPageParser(urlAppendix : String) : PageParser<Comments>(urlAppendix) {
 
     override fun parse(doc: Document): Comments {
 

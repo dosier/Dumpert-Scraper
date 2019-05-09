@@ -6,16 +6,19 @@ import java.util.concurrent.Callable
 
 
 /**
- * TODO: add documentation
+ * Represents a page grabber that returns an object of type [T].
+ *
+ * @param url the [URL] to grab the page at.
+ * @param parser the [PageParser] used to parse the grabbed page.
  *
  * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
  * @since   2019-02-08
  * @version 1.0
  */
-class PageGrab<T>(private val url: URL, private val request: PageRequest<T>) : Callable<T> {
+class PageGrabber<T>(private val url: URL, private val parser: PageParser<T>) : Callable<T> {
 
     override fun call(): T {
-        return request.parse(Jsoup
+        return parser.parse(Jsoup
             .connect(url.toExternalForm())
             .timeout(TIMEOUT)
             .followRedirects(true)
