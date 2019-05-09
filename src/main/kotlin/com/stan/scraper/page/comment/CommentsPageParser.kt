@@ -7,13 +7,13 @@ import org.jsoup.nodes.Document
 /**
  * Represents a [PageParser] implementation for [Comments].
  *
- * @param urlAppendix the value appended to the base url (to target a specific page).
+ * @param pageId the id of the targeted page.
  *
  * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
  * @since   2019-05-09
  * @version 1.0
  */
-class CommentsPageParser(urlAppendix : String) : PageParser<Comments>(urlAppendix) {
+class CommentsPageParser(pageId : String) : PageParser<Comments>("embed/$pageId/comments/") {
 
     override fun parse(doc: Document): Comments {
 
@@ -44,6 +44,8 @@ class CommentsPageParser(urlAppendix : String) : PageParser<Comments>(urlAppendi
 
     companion object {
 
+        const val COMMENTS_BASE_URL = "https://comments.dumpert.nl/"
+
         const val COMMENT_LIST = "article.comment"
         const val COMMENT_CONTENT = "div.cmt-content"
         const val COMMENT_USERNAME = "span.username"
@@ -51,6 +53,5 @@ class CommentsPageParser(urlAppendix : String) : PageParser<Comments>(urlAppendi
         const val COMMENT_KUDOS = "span.commentkudocount"
 
         const val TOP_COMMENT = "data-topcomment"
-
     }
 }
