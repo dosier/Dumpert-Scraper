@@ -1,7 +1,5 @@
 # Dumpert-Scraper
-Dumpert scraper API in Kotlin
-
-This repository contains a scraper library that can be used to parse comment pages from Dumpert.
+This repository contains a scraper library that can be used to scraper Dumpert comment sections.
 
 ### Example scraper
 ```kotlin
