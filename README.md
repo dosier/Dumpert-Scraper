@@ -5,9 +5,14 @@ This repository contains a scraper library that can be used to parse comment pag
 
 ### Example scraper
 ```
-val scraper = Scraper<Comments>() // create a new scraper
-val requests = listOf(CommentsPageParser(pageId)) // parse comments from the page with the specified pageId
-val results = scraper.scrape(COMMENTS_BASE_URL, requests) // load the scraping results
+// Create a new Scraper
+val scraper = Scraper<Comments>()
+
+// Create a list of page parsers
+val parsers = listOf(CommentsPageParser(pageId))
+
+// Scrape the listed pages and fetch the results
+val results = scraper.scrape(COMMENTS_BASE_URL, parsers)
 ```
 
 ### Example result sorting
