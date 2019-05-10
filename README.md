@@ -4,7 +4,7 @@ Dumpert scraper API in Kotlin
 This repository contains a scraper library that can be used to parse comment pages from Dumpert.
 
 ### Example scraper
-```
+```kotlin
 // Create a new Scraper
 val scraper = Scraper<Comments>()
 
@@ -16,12 +16,12 @@ val results = scraper.scrape(COMMENTS_BASE_URL, parsers)
 ```
 
 ### Example result sorting
-```
+```kotlin
 results.forEach { it.sortByKudos() } // sorts results by descending kudos
 ```
 
 ### Example serialization
-```
+```kotlin
 Serializer.serialize(pageId.replace("/", "_"), results) // serializes the results and saves it to a file
 ```
 ## Built With
