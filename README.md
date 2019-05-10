@@ -3,13 +3,13 @@ This repository contains a scraper library that can be used to scraper Dumpert c
 
 ### Example scraper
 ```kotlin
-// Create a new Scraper
+// create a new Scraper
 val scraper = Scraper<Comments>()
 
-// Create a list of page parsers
+// create a list of page parsers
 val parsers = listOf(CommentsPageParser(pageId))
 
-// Scrape the listed pages and fetch the results
+// scrape the listed pages and fetch the results
 val results = scraper.scrape(COMMENTS_BASE_URL, parsers)
 ```
 
