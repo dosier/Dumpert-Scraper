@@ -17,12 +17,14 @@ val results = scraper.scrape(COMMENTS_BASE_URL, parsers)
 
 ### Example result sorting
 ```kotlin
-results.forEach { it.sortByKudos() } // sorts results by descending kudos
+// sorts results by descending kudos
+results.forEach { it.sortByKudos() } 
 ```
 
 ### Example serialization
 ```kotlin
-Serializer.serialize(pageId.replace("/", "_"), results) // serializes the results and saves it to a file
+// serializes the results and saves it to a file
+Serializer.serialize(pageId.replace("/", "_"), results) 
 ```
 ## Built With
 
