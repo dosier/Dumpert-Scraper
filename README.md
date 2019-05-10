@@ -3,7 +3,7 @@ Dumpert scraper API in Kotlin
 
 This repository contains a scraper library that can be used to parse comment pages from Dumpert.
 
-### Example scraping usage
+### Example scraper
 ```
 val scraper = Scraper<Comments>() // create a new scraper
 val requests = listOf(CommentsPageParser(pageId)) // parse comments from the page with the specified pageId
