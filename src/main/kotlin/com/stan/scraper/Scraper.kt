@@ -35,8 +35,11 @@ class Scraper<T> {
         for(request in parsers)
             submitNewURL(request.toURL(baseUrl), request)
 
-        while (scraping())
+        while (scraping()) {
             println("Scraping...")
+        }
+
+        executorService.shutdown()
 
         return data
     }
