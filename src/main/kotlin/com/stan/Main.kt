@@ -22,13 +22,26 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>){
 
-//        scrapeAndSerializeDumps()
-
         val pageIds = ArrayList<String>()
 
-        Dumps.loadRange(1, 100).forEach { pageIds.addAll(it.getPageIds()) }
+        Dumps.loadRange(1, 10)
+            .forEach { pageIds.addAll(it.getPageIds()) }
 
-        scrapeAndSerializeComments(*pageIds.toTypedArray())
+        val comments = ArrayList<Comments.Comment>()
+
+        Comments.load(*pageIds.toTypedArray())
+            .forEach { comments.addAll(it.comments) }
+
+        printTopUsers(comments)
+    }
+
+    private fun printTopUsers(comments: ArrayList<Comments.Comment>) {
+        comments
+            .groupBy { it.user }
+            .mapValues { it.value.sumBy { comment -> comment.kudos } }
+            .toList()
+            .sortedByDescending { it.second }
+            .forEach { println("User:  ${it.first} \n \t kudos = ${it.second}") }
     }
 
     /**
