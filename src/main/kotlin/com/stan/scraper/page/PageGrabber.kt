@@ -23,7 +23,7 @@ class PageGrabber<T>(private val url: URL, private val parser: PageParser<T>) : 
             .timeout(TIMEOUT)
             .cookie("cpc", "bla")
             .followRedirects(true)
-            .post())
+            .get())
     }
 
     companion object {

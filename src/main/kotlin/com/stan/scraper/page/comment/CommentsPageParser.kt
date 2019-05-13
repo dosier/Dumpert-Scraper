@@ -13,14 +13,14 @@ import org.jsoup.nodes.Document
  * @since   2019-05-09
  * @version 1.0
  */
-class CommentsPageParser(pageId : String) : PageParser<Comments>("embed/$pageId/comments/") {
+class CommentsPageParser(private val pageId : String) : PageParser<Comments>("embed/$pageId/comments/") {
 
     override fun parse(doc: Document): Comments {
 
         /*
          * Creat comments cache to store parsing results.
          */
-        val commentCache = Comments()
+        val commentCache = Comments(pageId)
 
         val commentEntries = doc.select(COMMENT_LIST)
 
@@ -43,8 +43,6 @@ class CommentsPageParser(pageId : String) : PageParser<Comments>("embed/$pageId/
     }
 
     companion object {
-
-        const val COMMENTS_BASE_URL = "https://comments.dumpert.nl/"
 
         const val COMMENT_LIST = "article.comment"
         const val COMMENT_CONTENT = "div.cmt-content"

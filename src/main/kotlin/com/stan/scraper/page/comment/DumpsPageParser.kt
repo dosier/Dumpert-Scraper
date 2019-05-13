@@ -10,11 +10,11 @@ import org.jsoup.nodes.Document
  * @since   2019-05-13
  * @version 1.0
  */
-class DumpsPageParser(page: Int) : PageParser<Dumps>("toppers/$page/") {
+class DumpsPageParser(private val pageIndex: Int) : PageParser<Dumps>("toppers/$pageIndex/") {
 
     override fun parse(doc: Document): Dumps {
 
-        val dumps = Dumps()
+        val dumps = Dumps(pageIndex)
 
         val pageContainer = doc.selectFirst(DUMPS_CONTENT)
 
@@ -39,8 +39,6 @@ class DumpsPageParser(page: Int) : PageParser<Dumps>("toppers/$page/") {
     }
 
     companion object {
-
-        const val DUMPS_BASE_URL = "https://www.dumpert.nl/"
 
         const val DUMP_PAGE_COUNT = 10
 

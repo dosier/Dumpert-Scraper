@@ -1,6 +1,8 @@
 package com.stan.scraper.page.comment
 
 import com.google.gson.annotations.Expose
+import com.google.gson.reflect.TypeToken
+import com.stan.scraper.Serializer
 
 /**
  * TODO: add documentation
@@ -9,7 +11,7 @@ import com.google.gson.annotations.Expose
  * @since   2019-05-13
  * @version 1.0
  */
-class Dumps {
+class Dumps(private val pageIndex : Int) {
 
     @Expose private val dumps = ArrayList<Dump>()
 
@@ -22,6 +24,14 @@ class Dumps {
         dumps.add(dump)
     }
 
+    fun getPageIds() : List<String>{
+        return dumps.map { it.pageId }
+    }
+
+    override fun toString(): String {
+        return "$pageIndex"
+    }
+
     class Dump(
         @Expose val pageId: String,
         @Expose val title: String,
@@ -29,4 +39,15 @@ class Dumps {
         @Expose val stats: String,
         @Expose val description: String
     )
+
+    companion object {
+
+        const val BASE_URL = "https://www.dumpert.nl/"
+
+        private val type = object : TypeToken<Dumps>(){}.type!!
+
+        fun load(pageIndex: Int) : Dumps {
+            return Serializer.deserialize("dumps/$pageIndex", type)
+        }
+    }
 }

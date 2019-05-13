@@ -1,6 +1,7 @@
 package com.stan.scraper.page.comment
 
 import com.google.gson.annotations.Expose
+import java.nio.file.Path
 
 /**
  * This class represents a collection of comments of one comment page.
@@ -12,7 +13,7 @@ import com.google.gson.annotations.Expose
  * @since   2019-05-09
  * @version 1.0
  */
-class Comments {
+class Comments(private val pageId: String) {
 
     @Expose lateinit var topComment : Comment
 
@@ -55,6 +56,10 @@ class Comments {
         comments.sortByDescending { it.dateTime }
     }
 
+    override fun toString(): String {
+        return pageId.replace("/", "_")
+    }
+
     /**
      * Represents one comment on a dumper page.
      *
@@ -67,4 +72,10 @@ class Comments {
                   @Expose val content : String,
                   @Expose val dateTime : String,
                   @Expose val kudos : Int)
+
+    companion object {
+
+        const val BASE_URL = "https://comments.dumpert.nl/"
+
+    }
 }

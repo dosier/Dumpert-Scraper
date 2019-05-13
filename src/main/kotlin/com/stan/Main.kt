@@ -4,10 +4,8 @@ import com.stan.scraper.Scraper
 import com.stan.scraper.Serializer
 import com.stan.scraper.page.comment.CommentsPageParser
 import com.stan.scraper.page.comment.Comments
-import com.stan.scraper.page.comment.CommentsPageParser.Companion.COMMENTS_BASE_URL
 import com.stan.scraper.page.comment.Dumps
 import com.stan.scraper.page.comment.DumpsPageParser
-import com.stan.scraper.page.comment.DumpsPageParser.Companion.DUMPS_BASE_URL
 import java.util.stream.IntStream
 import kotlin.streams.toList
 
@@ -26,23 +24,27 @@ object Main {
     fun main(args: Array<String>){
 //        scrapeAndSerializeComments("7679071/af4e4f87")
 //        scrapeAndSerializeComments("7678735/80d52f3f")
-        scrapeAndSerializeDumps()
+
+        val dumps = Dumps.load(1)
+
+        scrapeAndSerializeComments(*dumps.getPageIds().toTypedArray())
+
+
     }
 
     /**
-     * This function scrapes and serializes the page with the argued id.
+     * This function scrapes and serializes all pages with the specified ids.
      *
-     * @param pageId the id of the page to parse.
+     * @param pageIds the ids of the pages to parse.
      */
-    private fun scrapeAndSerializeComments(pageId : String){
+    private fun scrapeAndSerializeComments(vararg pageIds : String){
 
         val scraper = Scraper<Comments>()
-        val parsers = listOf(CommentsPageParser(pageId))
-        val results = scraper.scrape(COMMENTS_BASE_URL, parsers)
+        val parsers = pageIds.map { CommentsPageParser(it) }
+        val results = scraper.scrape(Comments.BASE_URL, parsers)
 
         results.forEach { it.sortByKudos() }
-
-        Serializer.serialize("comments/${pageId.replace("/", "_")}", results)
+        results.forEach { Serializer.serialize("comments/$it", it) }
     }
 
     /**
@@ -52,13 +54,13 @@ object Main {
 
         val scraper = Scraper<Dumps>()
 
-        val parsers = IntStream.range(1, DumpsPageParser.DUMP_PAGE_COUNT)
+        val parsers = IntStream.rangeClosed(1, DumpsPageParser.DUMP_PAGE_COUNT)
             .mapToObj { DumpsPageParser(it) }
             .toList()
 
-        val results = scraper.scrape(DUMPS_BASE_URL, parsers)
+        val results = scraper.scrape(Dumps.BASE_URL, parsers)
 
-        Serializer.serialize("pages", results)
+        results.forEach { Serializer.serialize("dumps/$it", it) }
     }
 
 }

@@ -2,7 +2,9 @@ package com.stan.scraper
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import java.io.FileReader
 import java.io.FileWriter
+import java.lang.reflect.Type
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -26,12 +28,12 @@ object Serializer {
         .create()!!
 
     /**
-     * Serializes a [List] of results from the scraping process to the argued file.
+     * Serializes a result of type [T] after the scraping process to the argued file.
      *
      * @param fileName the name of the file (excluding file extension).
-     * @param results a [List] of results to serialize.
+     * @param result a [T] result to serialize.
      */
-    fun<T> serialize(fileName: String, results: List<T>) {
+    fun<T> serialize(fileName: String, result: T) {
 
         SAVE_PATH.toFile().mkdir()
 
@@ -41,10 +43,23 @@ object Serializer {
 
         val fileWriter = FileWriter(file)
 
-        GSON.toJson(results, fileWriter)
+        GSON.toJson(result, fileWriter)
 
         fileWriter.flush()
         fileWriter.close()
+    }
+
+    fun<T> deserialize(fileName: String, type : Type) : T {
+
+        val file = SAVE_PATH.resolve("$fileName.json").toFile()
+
+        val fileReader = FileReader(file)
+
+        val result = GSON.fromJson<T>(fileReader, type)
+
+        fileReader.close()
+
+        return result
     }
 
 }
