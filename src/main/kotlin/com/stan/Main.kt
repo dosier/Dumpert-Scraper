@@ -11,8 +11,6 @@ import kotlin.streams.toList
 /**
  * This is the entry point of the application.
  *
- * TODO: add automatic page id listing (maybe use video navigation).
- *
  * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
  * @since   2019-05-09
  * @version 1.0
@@ -33,15 +31,6 @@ object Main {
             .forEach { comments.addAll(it.comments) }
 
         printTopUsers(comments)
-    }
-
-    private fun printTopUsers(comments: ArrayList<Comments.Comment>) {
-        comments
-            .groupBy { it.user }
-            .mapValues { it.value.sumBy { comment -> comment.kudos } }
-            .toList()
-            .sortedByDescending { it.second }
-            .forEach { println("User:  ${it.first} \n \t kudos = ${it.second}") }
     }
 
     /**
@@ -79,4 +68,12 @@ object Main {
         results.forEach { Serializer.serialize("${Dumps.BASE_PATH}/$it", it) }
     }
 
+    private fun printTopUsers(comments: ArrayList<Comments.Comment>) {
+        comments
+            .groupBy { it.user }
+            .mapValues { it.value.sumBy { comment -> comment.kudos } }
+            .toList()
+            .sortedByDescending { it.second }
+            .forEach { println("User:  ${it.first} \n \t kudos = ${it.second}") }
+    }
 }
