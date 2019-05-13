@@ -1,8 +1,8 @@
-package com.stan.scraper.page.comment
+package com.stan.scraper.parse.dump
 
 import com.google.gson.annotations.Expose
 import com.google.gson.reflect.TypeToken
-import com.stan.scraper.Serializer
+import com.stan.Serializer
 
 /**
  * TODO: add documentation
@@ -48,7 +48,9 @@ class Dumps(private val pageIndex : Int) {
         private val type = object : TypeToken<Dumps>(){}.type!!
 
         fun load(pageIndex: Int) : Dumps {
-            return Serializer.deserialize("$BASE_PATH/$pageIndex", type)
+            return Serializer.deserialize("$BASE_PATH/$pageIndex",
+                type
+            )
         }
     }
 }

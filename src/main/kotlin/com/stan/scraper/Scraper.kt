@@ -1,7 +1,6 @@
 package com.stan.scraper
 
-import com.stan.scraper.page.PageParser
-import com.stan.scraper.page.PageGrabber
+import com.stan.scraper.parse.Parser
 import java.net.URL
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -26,11 +25,11 @@ class Scraper<T> {
      * Start scraping pages from the specified url.
      *
      * @param baseUrl the base url used to fetch pages from.
-     * @param parsers a [List] of [PageParser] objects that each detail and parse one page.
+     * @param parsers a [List] of [Parser] objects that each detail and parse one page.
      *
      * @return a [List] of objects of type [T].
      */
-    fun scrape(baseUrl: String, parsers: List<PageParser<T>>) : List<T>{
+    fun scrape(baseUrl: String, parsers: List<Parser<T>>) : List<T>{
 
         for(request in parsers)
             submitNewURL(request.toURL(baseUrl), request)
@@ -48,10 +47,10 @@ class Scraper<T> {
      * Submit a new page at the specified [URL] for scraping.
      *
      * @param url the page [URL].
-     * @param parser the [PageParser].
+     * @param parser the [Parser].
      */
-    private fun submitNewURL(url: URL, parser: PageParser<T>) {
-        val page = PageGrabber(url, parser)
+    private fun submitNewURL(url: URL, parser: Parser<T>) {
+        val page = Grabber(url, parser)
         val future = executorService.submit(page)
         futures.add(future)
     }
@@ -74,8 +73,7 @@ class Scraper<T> {
                 try {
                     data.add(future.get())
                 } catch (e: Exception) {
-//                    System.err.println("Failed to scrape page: ${e.localizedMessage}")
-                    e.printStackTrace()
+                    System.err.println("Failed to scrape page: ${e.localizedMessage}")
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.stan.scraper.page
+package com.stan.scraper.parse
 
 import org.jsoup.nodes.Document
 import java.net.URL
@@ -12,7 +12,7 @@ import java.net.URL
  * @since   2019-02-08
  * @version 1.0
  */
-abstract class PageParser<T>(private val urlAppendix: String) {
+abstract class Parser<T>(private val urlAppendix: String) {
 
     /**
      * Create an [URL] from the specified base and [urlAppendix].

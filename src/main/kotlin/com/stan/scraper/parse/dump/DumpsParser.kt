@@ -1,6 +1,6 @@
-package com.stan.scraper.page.comment
+package com.stan.scraper.parse.dump
 
-import com.stan.scraper.page.PageParser
+import com.stan.scraper.parse.Parser
 import org.jsoup.nodes.Document
 
 /**
@@ -10,7 +10,7 @@ import org.jsoup.nodes.Document
  * @since   2019-05-13
  * @version 1.0
  */
-class DumpsPageParser(private val pageIndex: Int) : PageParser<Dumps>("toppers/$pageIndex/") {
+class DumpsParser(private val pageIndex: Int) : Parser<Dumps>("toppers/$pageIndex/") {
 
     override fun parse(doc: Document): Dumps {
 

@@ -1,11 +1,11 @@
-package com.stan.scraper.page.comment
+package com.stan.scraper.parse.comment
 
-import com.stan.scraper.page.PageParser
-import com.stan.scraper.page.comment.Comments.Comment
+import com.stan.scraper.parse.Parser
+import com.stan.scraper.parse.comment.Comments.Comment
 import org.jsoup.nodes.Document
 
 /**
- * Represents a [PageParser] implementation for [Comments].
+ * Represents a [Parser] implementation for [Comments].
  *
  * @param pageId the id of the targeted page.
  *
@@ -13,7 +13,7 @@ import org.jsoup.nodes.Document
  * @since   2019-05-09
  * @version 1.0
  */
-class CommentsPageParser(private val pageId : String) : PageParser<Comments>("embed/$pageId/comments/") {
+class CommentsParser(private val pageId : String) : Parser<Comments>("embed/$pageId/comments/") {
 
     override fun parse(doc: Document): Comments {
 

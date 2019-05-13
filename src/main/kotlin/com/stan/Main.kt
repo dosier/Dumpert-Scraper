@@ -1,11 +1,10 @@
 package com.stan
 
 import com.stan.scraper.Scraper
-import com.stan.scraper.Serializer
-import com.stan.scraper.page.comment.CommentsPageParser
-import com.stan.scraper.page.comment.Comments
-import com.stan.scraper.page.comment.Dumps
-import com.stan.scraper.page.comment.DumpsPageParser
+import com.stan.scraper.parse.comment.CommentsParser
+import com.stan.scraper.parse.comment.Comments
+import com.stan.scraper.parse.dump.Dumps
+import com.stan.scraper.parse.dump.DumpsParser
 import java.util.stream.IntStream
 import kotlin.streams.toList
 
@@ -22,14 +21,10 @@ object Main {
 
     @JvmStatic
     fun main(args: Array<String>){
-//        scrapeAndSerializeComments("7679071/af4e4f87")
-//        scrapeAndSerializeComments("7678735/80d52f3f")
 
         val dumps = Dumps.load(1)
 
         scrapeAndSerializeComments(*dumps.getPageIds().toTypedArray())
-
-
     }
 
     /**
@@ -40,7 +35,7 @@ object Main {
     private fun scrapeAndSerializeComments(vararg pageIds : String){
 
         val scraper = Scraper<Comments>()
-        val parsers = pageIds.map { CommentsPageParser(it) }
+        val parsers = pageIds.map { CommentsParser(it) }
         val results = scraper.scrape(Comments.BASE_URL, parsers)
 
         results.forEach { it.sortByKudos() }
@@ -54,8 +49,8 @@ object Main {
 
         val scraper = Scraper<Dumps>()
 
-        val parsers = IntStream.rangeClosed(1, DumpsPageParser.DUMP_PAGE_COUNT)
-            .mapToObj { DumpsPageParser(it) }
+        val parsers = IntStream.rangeClosed(1, DumpsParser.DUMP_PAGE_COUNT)
+            .mapToObj { DumpsParser(it) }
             .toList()
 
         val results = scraper.scrape(Dumps.BASE_URL, parsers)

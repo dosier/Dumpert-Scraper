@@ -1,7 +1,6 @@
-package com.stan.scraper.page.comment
+package com.stan.scraper.parse.comment
 
 import com.google.gson.annotations.Expose
-import java.nio.file.Path
 
 /**
  * This class represents a collection of comments of one comment page.

@@ -1,9 +1,9 @@
-package com.stan.scraper
+package com.stan
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.stan.scraper.page.comment.Comments
-import com.stan.scraper.page.comment.Dumps
+import com.stan.scraper.parse.comment.Comments
+import com.stan.scraper.parse.dump.Dumps
 import java.io.FileReader
 import java.io.FileWriter
 import java.lang.reflect.Type
