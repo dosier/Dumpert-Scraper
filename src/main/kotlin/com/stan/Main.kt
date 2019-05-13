@@ -22,11 +22,13 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>){
 
-        scrapeAndSerializeDumps()
+//        scrapeAndSerializeDumps()
 
-        val dumps = Dumps.load(1)
+        val pageIds = ArrayList<String>()
 
-        scrapeAndSerializeComments(*dumps.getPageIds().toTypedArray())
+        Dumps.loadRange(1, 100).forEach { pageIds.addAll(it.getPageIds()) }
+
+        scrapeAndSerializeComments(*pageIds.toTypedArray())
     }
 
     /**
