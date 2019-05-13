@@ -21,8 +21,9 @@ class PageGrabber<T>(private val url: URL, private val parser: PageParser<T>) : 
         return parser.parse(Jsoup
             .connect(url.toExternalForm())
             .timeout(TIMEOUT)
+            .cookie("cpc", "bla")
             .followRedirects(true)
-            .get())
+            .post())
     }
 
     companion object {

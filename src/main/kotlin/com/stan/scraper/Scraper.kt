@@ -71,7 +71,8 @@ class Scraper<T> {
                 try {
                     data.add(future.get())
                 } catch (e: Exception) {
-                    System.err.println("Failed to scrape page: ${e.localizedMessage}")
+//                    System.err.println("Failed to scrape page: ${e.localizedMessage}")
+                    e.printStackTrace()
                 }
             }
         }
@@ -79,7 +80,9 @@ class Scraper<T> {
     }
 
     companion object {
+
         const val THREAD_COUNT = 1
-        const val PAUSE_TIME = 100L
+
+        const val PAUSE_TIME = 1_000L
     }
 }

@@ -63,6 +63,8 @@ class Comments {
      * @param dateTime  the time and date of when this comment was placed.
      * @param kudos     the kudos score of this comment.
      */
-    class Comment(@Expose val user: String, @Expose val content : String, @Expose val dateTime : String, @Expose val kudos : Int)
-
+    class Comment(@Expose val user: String,
+                  @Expose val content : String,
+                  @Expose val dateTime : String,
+                  @Expose val kudos : Int)
 }
