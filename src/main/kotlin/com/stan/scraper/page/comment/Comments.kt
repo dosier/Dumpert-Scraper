@@ -76,6 +76,7 @@ class Comments(private val pageId: String) {
     companion object {
 
         const val BASE_URL = "https://comments.dumpert.nl/"
+        const val BASE_PATH = "comments"
 
     }
 }

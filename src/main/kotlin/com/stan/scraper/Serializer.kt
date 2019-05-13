@@ -2,6 +2,8 @@ package com.stan.scraper
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.stan.scraper.page.comment.Comments
+import com.stan.scraper.page.comment.Dumps
 import java.io.FileReader
 import java.io.FileWriter
 import java.lang.reflect.Type
@@ -9,7 +11,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
- * Represents a serializer object, can be used to serialize scrape results.
+ * Represents a serializer object, can be used to (de-)serialize scrape results.
  *
  * @see SAVE_PATH   the base [Path] to store serialized files at.
  * @see GSON        the [Gson] implementation used to format the data.
@@ -27,11 +29,17 @@ object Serializer {
         .excludeFieldsWithoutExposeAnnotation()
         .create()!!
 
+    init {
+        SAVE_PATH.toFile().mkdirs()
+        SAVE_PATH.resolve(Dumps.BASE_PATH).toFile().mkdir()
+        SAVE_PATH.resolve(Comments.BASE_PATH).toFile().mkdir()
+    }
+
     /**
-     * Serializes a result of type [T] after the scraping process to the argued file.
+     * Serializes a result of type [T] to the argued file.
      *
      * @param fileName the name of the file (excluding file extension).
-     * @param result a [T] result to serialize.
+     * @param result the [T] result to serialize.
      */
     fun<T> serialize(fileName: String, result: T) {
 
@@ -49,6 +57,13 @@ object Serializer {
         fileWriter.close()
     }
 
+    /**
+     * De-serializes a result of type [T] from the argued file.
+     *
+     * @param fileName the name of the file (excluding file extension).
+     *
+     * @return a result of type [T].
+     */
     fun<T> deserialize(fileName: String, type : Type) : T {
 
         val file = SAVE_PATH.resolve("$fileName.json").toFile()

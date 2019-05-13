@@ -44,7 +44,7 @@ object Main {
         val results = scraper.scrape(Comments.BASE_URL, parsers)
 
         results.forEach { it.sortByKudos() }
-        results.forEach { Serializer.serialize("comments/$it", it) }
+        results.forEach { Serializer.serialize("${Comments.BASE_PATH}/$it", it) }
     }
 
     /**
@@ -60,7 +60,7 @@ object Main {
 
         val results = scraper.scrape(Dumps.BASE_URL, parsers)
 
-        results.forEach { Serializer.serialize("dumps/$it", it) }
+        results.forEach { Serializer.serialize("${Dumps.BASE_PATH}/$it", it) }
     }
 
 }

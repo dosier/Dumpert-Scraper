@@ -43,11 +43,12 @@ class Dumps(private val pageIndex : Int) {
     companion object {
 
         const val BASE_URL = "https://www.dumpert.nl/"
+        const val BASE_PATH = "dumps"
 
         private val type = object : TypeToken<Dumps>(){}.type!!
 
         fun load(pageIndex: Int) : Dumps {
-            return Serializer.deserialize("dumps/$pageIndex", type)
+            return Serializer.deserialize("$BASE_PATH/$pageIndex", type)
         }
     }
 }
