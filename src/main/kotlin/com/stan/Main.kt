@@ -1,5 +1,7 @@
-package com.stan.scraper
+package com.stan
 
+import com.stan.scraper.Scraper
+import com.stan.scraper.Serializer
 import com.stan.scraper.page.comment.CommentsPageParser
 import com.stan.scraper.page.comment.Comments
 import com.stan.scraper.page.comment.CommentsPageParser.Companion.COMMENTS_BASE_URL
@@ -40,13 +42,11 @@ object Main {
 
         results.forEach { it.sortByKudos() }
 
-        Serializer.serialize(pageId.replace("/", "_"), results)
+        Serializer.serialize("comments/${pageId.replace("/", "_")}", results)
     }
 
     /**
-     * This function scrapes and serializes the page with the argued id.
-     *
-     * @param pageId the id of the page to parse.
+     * This function scrapes and serializes all dump pages.
      */
     private fun scrapeAndSerializeDumps(){
 
@@ -57,6 +57,8 @@ object Main {
             .toList()
 
         val results = scraper.scrape(DUMPS_BASE_URL, parsers)
+
+        Serializer.serialize("pages", results)
     }
 
 }
