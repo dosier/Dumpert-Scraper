@@ -1,25 +1,31 @@
 package com.stan.scraper
 
+import com.stan.Configuration
 import com.stan.scraper.parse.Parser
+import java.math.RoundingMode
 import java.net.URL
+import java.text.DecimalFormat
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Represents a scraper that parses web pages and parses them to objects of type [T].
  *
- * @see THREAD_COUNT the amount of threads the [executorService] is allowed to work with.
- * @see PAUSE_TIME the amount of millis to wait between [scraping] iterations.
+ * @see Configuration.threadCount the number of threads the [executorService] is allowed to work with.
+ * @see Configuration.delayBetweenPageScrapes the amount of millis to wait between [scraping] iterations.
  *
  * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
  * @since   2019-05-09
  * @version 1.0
  */
-class Scraper<T> {
+class Scraper<T>(private val configuration : Configuration) {
 
-    private val executorService = Executors.newFixedThreadPool(THREAD_COUNT)!!
+    private val executorService = Executors.newFixedThreadPool(configuration.threadCount)!!
     private val futures = ArrayList<Future<T>>()
     private val data = ArrayList<T>()
+
+    private val counter = AtomicInteger(0)
 
     /**
      * Start scraping pages from the specified url.
@@ -34,8 +40,18 @@ class Scraper<T> {
         for(request in parsers)
             submitNewURL(request.toURL(baseUrl), request)
 
+        val total = parsers.size
+        var previousPercentage = ""
+
         while (scraping()) {
-            println("Scraping...")
+
+            val left = total - counter.get()
+            val percentage = format.format(100 - ((left * 100.0f) / total))
+
+            if(percentage != previousPercentage){
+                println("Scraping... $percentage% completed")
+                previousPercentage = percentage
+            }
         }
 
         executorService.shutdown()
@@ -58,7 +74,7 @@ class Scraper<T> {
     @Throws(InterruptedException::class)
     private fun scraping(): Boolean {
 
-        Thread.sleep(PAUSE_TIME)
+        Thread.sleep(configuration.delayBetweenPageScrapes)
 
         val iterator = futures.iterator()
 
@@ -69,6 +85,8 @@ class Scraper<T> {
             if (future.isDone) {
 
                 iterator.remove()
+
+                counter.incrementAndGet()
 
                 try {
                     data.add(future.get())
@@ -82,8 +100,11 @@ class Scraper<T> {
 
     companion object {
 
-        const val THREAD_COUNT = 1
+        private val format = DecimalFormat("#.###")
 
-        const val PAUSE_TIME = 1_000L
+        init {
+            format.roundingMode = RoundingMode.CEILING
+        }
+
     }
 }

@@ -22,6 +22,8 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>){
 
+        scrapeAndSerializeDumps()
+
         val dumps = Dumps.load(1)
 
         scrapeAndSerializeComments(*dumps.getPageIds().toTypedArray())
@@ -34,7 +36,9 @@ object Main {
      */
     private fun scrapeAndSerializeComments(vararg pageIds : String){
 
-        val scraper = Scraper<Comments>()
+        val config = Configuration.load()
+
+        val scraper = Scraper<Comments>(config)
         val parsers = pageIds.map { CommentsParser(it) }
         val results = scraper.scrape(Comments.BASE_URL, parsers)
 
@@ -47,7 +51,9 @@ object Main {
      */
     private fun scrapeAndSerializeDumps(){
 
-        val scraper = Scraper<Dumps>()
+        val config = Configuration.load()
+
+        val scraper = Scraper<Dumps>(config)
 
         val parsers = IntStream.rangeClosed(1, DumpsParser.DUMP_PAGE_COUNT)
             .mapToObj { DumpsParser(it) }

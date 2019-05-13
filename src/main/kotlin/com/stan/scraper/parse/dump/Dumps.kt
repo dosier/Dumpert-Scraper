@@ -48,9 +48,7 @@ class Dumps(private val pageIndex : Int) {
         private val type = object : TypeToken<Dumps>(){}.type!!
 
         fun load(pageIndex: Int) : Dumps {
-            return Serializer.deserialize("$BASE_PATH/$pageIndex",
-                type
-            )
+            return Serializer.deserialize("$BASE_PATH/$pageIndex", type)
         }
     }
 }

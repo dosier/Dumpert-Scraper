@@ -40,7 +40,7 @@ class DumpsParser(private val pageIndex: Int) : Parser<Dumps>("toppers/$pageInde
 
     companion object {
 
-        const val DUMP_PAGE_COUNT = 10
+        const val DUMP_PAGE_COUNT = 10_000
 
         const val DUMPS_CONTENT = "section.dump-cnt"
         const val DUMP_CLASS = "dumpthumb"

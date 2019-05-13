@@ -35,6 +35,10 @@ object Serializer {
         SAVE_PATH.resolve(Comments.BASE_PATH).toFile().mkdir()
     }
 
+    fun exists(fileName: String) : Boolean {
+        return SAVE_PATH.resolve("$fileName.json").toFile().exists()
+    }
+
     /**
      * Serializes a result of type [T] to the argued file.
      *
