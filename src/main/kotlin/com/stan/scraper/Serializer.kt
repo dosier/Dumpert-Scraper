@@ -18,7 +18,7 @@ import java.nio.file.Paths
  */
 object Serializer {
 
-    private val SAVE_PATH = Paths.get("comments")!!
+    private val SAVE_PATH = Paths.get("data")!!
 
     private val GSON = GsonBuilder()
         .setPrettyPrinting()
