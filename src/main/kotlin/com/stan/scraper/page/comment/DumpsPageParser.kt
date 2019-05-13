@@ -22,17 +22,17 @@ class DumpsPageParser(page: Int) : PageParser<Dumps>("toppers/$page/") {
 
         for(dumpEntry in dumpEntries){
 
-            val title = dumpEntry.select("title").text()
-            val pageId = dumpEntry.select("a.href").text()
+            val pageId = dumpEntry.selectFirst("a").attr("href")
                 .substringAfter("mediabase/")
                 .substringBeforeLast("/")
 
             val details = dumpEntry.selectFirst(DUMP_DETAILS)
+            val dumpTitle = dumpEntry.select("h1").text()
             val dumpDate = details.selectFirst("date").text()
             val dumpStats = details.selectFirst("p.stats").text()
             val dumpDescription = details.selectFirst("p.description").text()
 
-            dumps.add(Dumps.Dump(title, pageId, dumpDate, dumpStats, dumpDescription))
+            dumps.add(Dumps.Dump(pageId, dumpTitle, dumpDate, dumpStats, dumpDescription))
         }
 
         return dumps
@@ -42,7 +42,7 @@ class DumpsPageParser(page: Int) : PageParser<Dumps>("toppers/$page/") {
 
         const val DUMPS_BASE_URL = "https://www.dumpert.nl/"
 
-        const val DUMP_PAGE_COUNT = 10_000
+        const val DUMP_PAGE_COUNT = 10
 
         const val DUMPS_CONTENT = "section.dump-cnt"
         const val DUMP_CLASS = "dumpthumb"

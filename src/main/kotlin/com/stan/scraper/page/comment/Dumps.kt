@@ -22,9 +22,11 @@ class Dumps {
         dumps.add(dump)
     }
 
-    class Dump(@Expose val title: String,
-               @Expose val pageId: String,
-               @Expose val date: String,
-               @Expose val stats: String,
-               @Expose val description: String)
+    class Dump(
+        @Expose val pageId: String,
+        @Expose val title: String,
+        @Expose val date: String,
+        @Expose val stats: String,
+        @Expose val description: String
+    )
 }
