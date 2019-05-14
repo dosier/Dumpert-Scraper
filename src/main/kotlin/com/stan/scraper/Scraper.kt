@@ -7,6 +7,7 @@ import java.net.URL
 import java.text.DecimalFormat
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -43,6 +44,8 @@ class Scraper<T>(private val configuration : Configuration) {
         val total = parsers.size
         var previousPercentage = ""
 
+        val start = System.currentTimeMillis()
+
         while (scraping()) {
 
             val left = total - counter.get()
@@ -54,6 +57,10 @@ class Scraper<T>(private val configuration : Configuration) {
             }
         }
 
+        val end = System.currentTimeMillis()
+        val duration = TimeUnit.MILLISECONDS.toSeconds(end-start)
+
+        println("Finished scraping, took $duration seconds")
         executorService.shutdown()
 
         return data
@@ -105,6 +112,5 @@ class Scraper<T>(private val configuration : Configuration) {
         init {
             format.roundingMode = RoundingMode.CEILING
         }
-
     }
 }
