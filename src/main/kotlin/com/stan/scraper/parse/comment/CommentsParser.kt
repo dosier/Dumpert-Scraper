@@ -3,6 +3,7 @@ package com.stan.scraper.parse.comment
 import com.stan.scraper.parse.Parser
 import com.stan.scraper.parse.comment.Comments.Comment
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 
 /**
  * Represents a [Parser] implementation for [Comments].
@@ -23,15 +24,16 @@ class CommentsParser(private val pageId : String) : Parser<Comments>("embed/$pag
         val commentCache = Comments(pageId)
 
         val commentEntries = doc.select(COMMENT_LIST)
+        val subcommentEntries = doc.select("div.subcomments")
+
+        val iterator = subcommentEntries.iterator()
 
         for(commentEntry in commentEntries){
 
-            val content = commentEntry.selectFirst(COMMENT_CONTENT).text()
-            val username = commentEntry.selectFirst(COMMENT_USERNAME).text()
-            val datetime = commentEntry.selectFirst(COMMENT_TIME).text()
-            val kudos = commentEntry.selectFirst(COMMENT_KUDOS).text().toInt()
+            val comment = parseComment(commentEntry)
 
-            val comment = Comment(username, content, datetime, kudos)
+            if(iterator.hasNext())
+                comment.subComments = parseSubComments(iterator.next())
 
             if(commentEntry.attr(TOP_COMMENT) == "1")
                 commentCache.topComment = comment
@@ -40,6 +42,19 @@ class CommentsParser(private val pageId : String) : Parser<Comments>("embed/$pag
         }
 
         return commentCache
+    }
+
+    private fun parseComment(commentEntry: Element): Comment {
+        val content = commentEntry.selectFirst(COMMENT_CONTENT).text()
+        val username = commentEntry.selectFirst(COMMENT_USERNAME).text()
+        val datetime = commentEntry.selectFirst(COMMENT_TIME).text()
+        val kudos = commentEntry.selectFirst(COMMENT_KUDOS).text().toInt()
+
+        return Comment(username, content, datetime, kudos)
+    }
+
+    private fun parseSubComments(subCommentEntry : Element) : List<Comment> {
+        return subCommentEntry.select(COMMENT_LIST).map { parseComment(it) }
     }
 
     companion object {

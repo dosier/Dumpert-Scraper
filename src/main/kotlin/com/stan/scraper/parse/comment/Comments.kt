@@ -3,9 +3,6 @@ package com.stan.scraper.parse.comment
 import com.google.gson.annotations.Expose
 import com.google.gson.reflect.TypeToken
 import com.stan.Serializer
-import com.stan.scraper.parse.dump.Dumps
-import java.util.stream.IntStream
-import kotlin.streams.toList
 
 /**
  * This class represents a collection of comments of one comment page.
@@ -60,6 +57,10 @@ class Comments(private val pageId: String) {
         comments.sortByDescending { it.dateTime }
     }
 
+    override fun toString(): String {
+        return pageId
+    }
+
     /**
      * Represents one comment on a dumper page.
      *
@@ -71,7 +72,8 @@ class Comments(private val pageId: String) {
     class Comment(@Expose val user: String,
                   @Expose val content : String,
                   @Expose val dateTime : String,
-                  @Expose val kudos : Int){
+                  @Expose val kudos : Int,
+                  @Expose var subComments : List<Comment>? = null){
 
         override fun toString(): String {
             return "Comment(user='$user', content='$content', dateTime='$dateTime', kudos=$kudos)"
