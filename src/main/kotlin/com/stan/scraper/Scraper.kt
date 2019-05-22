@@ -99,6 +99,7 @@ class Scraper<T>(private val configuration : Configuration) {
                     data.add(future.get())
                 } catch (e: Exception) {
                     System.err.println("Failed to scrape page: ${e.localizedMessage}")
+                    e.printStackTrace()
                 }
             }
         }

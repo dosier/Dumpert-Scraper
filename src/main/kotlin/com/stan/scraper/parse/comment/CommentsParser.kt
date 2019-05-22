@@ -23,19 +23,39 @@ class CommentsParser(private val pageId : String) : Parser<Comments>("embed/$pag
          */
         val commentCache = Comments(pageId)
 
-        val commentEntries = doc.select(COMMENT_LIST)
-        val subcommentEntries = doc.select("div.subcomments")
+        // Select all elements in the document with class article.comment
+        val commentEntries = doc.select(COMMENTS)
 
-        val iterator = subcommentEntries.iterator()
+        // Create a flexible iterator (can move forward and backwards)
+        val iterator = commentEntries.listIterator()
 
-        for(commentEntry in commentEntries){
+        while(iterator.hasNext()){
 
-            val comment = parseComment(commentEntry)
+            val next = iterator.next()!!
+            val comment = parseComment(next)
 
-            if(iterator.hasNext())
-                comment.subComments = parseSubComments(iterator.next())
+            val subComments = ArrayList<Comment>()
 
-            if(commentEntry.attr(TOP_COMMENT) == "1")
+            while (iterator.hasNext()){
+
+                val nextChild = iterator.next()
+
+                if(nextChild.parent().id() == SUB_COMMENTS){
+
+                    subComments.add(parseComment(nextChild))
+
+                } else {
+
+                    iterator.previous()
+
+                    break
+                }
+            }
+
+            if(subComments.isNotEmpty())
+                comment.subComments = subComments
+
+            if(next.attr(TOP_COMMENT) == "1")
                 commentCache.topComment = comment
             else
                 commentCache.add(comment)
@@ -53,13 +73,11 @@ class CommentsParser(private val pageId : String) : Parser<Comments>("embed/$pag
         return Comment(username, content, datetime, kudos)
     }
 
-    private fun parseSubComments(subCommentEntry : Element) : List<Comment> {
-        return subCommentEntry.select(COMMENT_LIST).map { parseComment(it) }
-    }
-
     companion object {
 
-        const val COMMENT_LIST = "article.comment"
+        const val SUB_COMMENTS = "subcomments"
+
+        const val COMMENTS = "article.comment"
         const val COMMENT_CONTENT = "div.cmt-content"
         const val COMMENT_USERNAME = "span.username"
         const val COMMENT_TIME = "span.datetime"
