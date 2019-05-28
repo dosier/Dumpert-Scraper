@@ -2,6 +2,7 @@ package com.stan
 
 import com.google.gson.annotations.Expose
 import com.google.gson.reflect.TypeToken
+import java.util.*
 
 /**
  * TODO: add documentation
@@ -15,7 +16,9 @@ import com.google.gson.reflect.TypeToken
  *
  */
 data class Configuration(@Expose val threadCount: Int = 1,
-                         @Expose val delayBetweenPageScrapes : Long = 1_000L){
+                         @Expose val delayBetweenPageScrapes : Long = 1_000L,
+                         @Expose val startPage : Int = 1,
+                         @Expose val endPage : Int = 1){
 
     companion object {
 

@@ -3,6 +3,7 @@ package com.stan.scraper.parse.dump
 import com.google.gson.annotations.Expose
 import com.google.gson.reflect.TypeToken
 import com.stan.Serializer
+import com.stan.scraper.parse.comment.Comments
 import java.util.stream.IntStream
 import kotlin.streams.toList
 
@@ -51,6 +52,10 @@ class Dumps(private val pageIndex : Int) {
 
         fun load(vararg pageIndices: Int) : List<Dumps> {
             return pageIndices.map { Serializer.deserialize<Dumps>("$BASE_PATH/$it", type) }
+        }
+
+        fun load(pageId: Int) : Dump {
+            return Serializer.deserialize<Dumps>("$BASE_PATH/$pageId", type).dumps.first()
         }
 
         fun loadRange(start : Int, end : Int) : List<Dumps> {

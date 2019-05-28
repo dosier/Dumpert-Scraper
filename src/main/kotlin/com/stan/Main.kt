@@ -1,8 +1,8 @@
 package com.stan
 
 import com.stan.scraper.Scraper
-import com.stan.scraper.parse.comment.CommentsParser
 import com.stan.scraper.parse.comment.Comments
+import com.stan.scraper.parse.comment.CommentsParser
 import com.stan.scraper.parse.dump.Dumps
 import com.stan.scraper.parse.dump.DumpsParser
 import java.util.stream.IntStream
@@ -17,20 +17,10 @@ import kotlin.streams.toList
  */
 object Main {
 
+
     @JvmStatic
     fun main(args: Array<String>){
-
-        val pageIds = ArrayList<String>()
-
-        Dumps.loadRange(1, 10)
-            .forEach { pageIds.addAll(it.getPageIds()) }
-
-        val comments = ArrayList<Comments.Comment>()
-
-        Comments.load(*pageIds.toTypedArray())
-            .forEach { comments.addAll(it.comments) }
-
-        printTopUsers(comments)
+        scrapeAndSerializeDumps()
     }
 
     /**
@@ -59,7 +49,7 @@ object Main {
 
         val scraper = Scraper<Dumps>(config)
 
-        val parsers = IntStream.rangeClosed(1, DumpsParser.DUMP_PAGE_COUNT)
+        val parsers = IntStream.rangeClosed(config.startPage, config.endPage)
             .mapToObj { DumpsParser(it) }
             .toList()
 

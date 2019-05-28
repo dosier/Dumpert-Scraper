@@ -3,6 +3,7 @@ package com.stan.scraper.parse.comment
 import com.google.gson.annotations.Expose
 import com.google.gson.reflect.TypeToken
 import com.stan.Serializer
+import com.stan.scraper.parse.dump.Dumps
 
 /**
  * This class represents a collection of comments of one comment page.
@@ -57,8 +58,9 @@ class Comments(private val pageId: String) {
         comments.sortByDescending { it.dateTime }
     }
 
+
     override fun toString(): String {
-        return pageId
+        return pageId.replace("/", "_")
     }
 
     /**
@@ -88,8 +90,23 @@ class Comments(private val pageId: String) {
         const val BASE_PATH = "comments"
         private val type = object : TypeToken<Comments>(){}.type!!
 
-        fun load(vararg pageIds: String) : List<Comments> {
-            return pageIds.map { Serializer.deserialize<Comments>("$BASE_PATH/${it.replace("/", "_")}", type) }
+        fun loadByDumps(vararg dumps: Dumps) : List<Comments> {
+
+            val pageIds = ArrayList<String>()
+
+            dumps.forEach { pageIds.addAll(it.getPageIds()) }
+
+            return loadByIds(*pageIds.toTypedArray())
+        }
+
+        fun loadByIds(vararg pageIds: String) : List<Comments> {
+            return pageIds.map { path(it) }
+                .filter { Serializer.exists(it) }
+                .map { Serializer.deserialize<Comments>(it, type) }
+        }
+
+        fun path(id : String) : String {
+            return "$BASE_PATH/${id.replace("/", "_")}"
         }
     }
 }
