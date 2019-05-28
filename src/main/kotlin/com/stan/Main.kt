@@ -17,10 +17,18 @@ import kotlin.streams.toList
  */
 object Main {
 
-
     @JvmStatic
     fun main(args: Array<String>){
-        scrapeAndSerializeDumps()
+
+        val results = scrapeAndSerializeDumps()
+
+        results.forEach { Serializer.serialize("${Dumps.BASE_PATH}/$it", it) }
+
+        val pageIds = ArrayList<String>()
+
+        results.forEach { pageIds.addAll(it.getPageIds()) }
+
+        scrapeAndSerializeComments(*pageIds.toTypedArray())
     }
 
     /**
@@ -30,6 +38,8 @@ object Main {
      */
     private fun scrapeAndSerializeComments(vararg pageIds : String){
 
+        println("Scraping comments from ${pageIds.size} pages")
+
         val config = Configuration.load()
 
         val scraper = Scraper<Comments>(config)
@@ -38,12 +48,17 @@ object Main {
 
         results.forEach { it.sortByKudos() }
         results.forEach { Serializer.serialize("${Comments.BASE_PATH}/$it", it) }
+
+        println()
+        println()
     }
 
     /**
      * This function scrapes and serializes all dump pages.
      */
-    private fun scrapeAndSerializeDumps(){
+    private fun scrapeAndSerializeDumps() : List<Dumps> {
+
+        println("Scraping dumps")
 
         val config = Configuration.load()
 
@@ -53,17 +68,10 @@ object Main {
             .mapToObj { DumpsParser(it) }
             .toList()
 
-        val results = scraper.scrape(Dumps.BASE_URL, parsers)
+        println()
+        println()
 
-        results.forEach { Serializer.serialize("${Dumps.BASE_PATH}/$it", it) }
+        return scraper.scrape(Dumps.BASE_URL, parsers)
     }
 
-    private fun printTopUsers(comments: ArrayList<Comments.Comment>) {
-        comments
-            .groupBy { it.user }
-            .mapValues { it.value.sumBy { comment -> comment.kudos } }
-            .toList()
-            .sortedByDescending { it.second }
-            .forEach { println("User:  ${it.first} \n \t kudos = ${it.second}") }
-    }
 }

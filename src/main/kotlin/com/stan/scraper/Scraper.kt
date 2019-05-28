@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * Represents a scraper that parses web pages and parses them to objects of type [T].
  *
  * @see Configuration.threadCount the number of threads the [executorService] is allowed to work with.
- * @see Configuration.delayBetweenPageScrapes the amount of millis to wait between [scraping] iterations.
+ * @see Configuration.delayBetweenPageScrapingIterations the amount of millis to wait between [scraping] iterations.
  *
  * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
  * @since   2019-05-09
@@ -81,7 +81,7 @@ class Scraper<T>(private val configuration : Configuration) {
     @Throws(InterruptedException::class)
     private fun scraping(): Boolean {
 
-        Thread.sleep(configuration.delayBetweenPageScrapes)
+        Thread.sleep(configuration.delayBetweenPageScrapingIterations)
 
         val iterator = futures.iterator()
 

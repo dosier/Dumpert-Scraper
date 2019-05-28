@@ -24,7 +24,6 @@ class Grabber<T>(private val url: URL, private val parser: Parser<T>) : Callable
             .timeout(TIMEOUT)
             .cookie("cpc", "bla")
             .cookie("nsfw", "1")
-
             .followRedirects(true)
             .get())
     }

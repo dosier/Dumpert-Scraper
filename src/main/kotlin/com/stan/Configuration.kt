@@ -2,7 +2,6 @@ package com.stan
 
 import com.google.gson.annotations.Expose
 import com.google.gson.reflect.TypeToken
-import java.util.*
 
 /**
  * TODO: add documentation
@@ -12,11 +11,11 @@ import java.util.*
  * @version 1.0
  *
  * @param threadCount the numbers of threads that the scraper can use.
- * @param delayBetweenPageScrapes the delay between each consecutive scrape batch (in millis).
+ * @param delayBetweenPageScrapingIterations the delay between each consecutive scrape batch (in millis).
  *
  */
 data class Configuration(@Expose val threadCount: Int = 1,
-                         @Expose val delayBetweenPageScrapes : Long = 1_000L,
+                         @Expose val delayBetweenPageScrapingIterations : Long = 1_000L,
                          @Expose val startPage : Int = 1,
                          @Expose val endPage : Int = 1){
 
@@ -34,18 +33,13 @@ data class Configuration(@Expose val threadCount: Int = 1,
             } else
                 Serializer.deserialize(FILE_NAME, type)
 
-            println("[Configuration]: load -> using the following configuration:")
-            println()
-            println(config)
-            println()
-
+            println("[Configuration]: load -> using the following configuration: $config")
             return config
         }
     }
 
     override fun toString(): String {
-        return "Configuration(threadCount=$threadCount, delayBetweenPageScrapes=$delayBetweenPageScrapes)"
+        return "Configuration(threadCount=$threadCount, delayBetweenPageScrapingIterations=$delayBetweenPageScrapingIterations)"
     }
-
 
 }

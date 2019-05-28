@@ -1,6 +1,6 @@
 {
   "threadCount": 20,
-  "delayBetweenPageScrapes": 5,
+  "delayBetweenPageScrapingIterations": 5,
   "startPage": 1,
-  "endPage": 3
+  "endPage": 15
 }
