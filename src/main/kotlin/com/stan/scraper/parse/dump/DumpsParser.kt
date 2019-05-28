@@ -10,7 +10,7 @@ import org.jsoup.nodes.Document
  * @since   2019-05-13
  * @version 1.0
  */
-class DumpsParser(private val pageIndex: Int) : Parser<Dumps>("toppers/$pageIndex/") {
+class DumpsParser(private val pageIndex: Int) : Parser<Dumps>("/$pageIndex/") {
 
     override fun parse(doc: Document): Dumps {
 
