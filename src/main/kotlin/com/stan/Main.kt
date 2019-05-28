@@ -5,6 +5,7 @@ import com.stan.scraper.parse.comment.Comments
 import com.stan.scraper.parse.comment.CommentsParser
 import com.stan.scraper.parse.dump.Dumps
 import com.stan.scraper.parse.dump.DumpsParser
+import java.util.concurrent.TimeUnit
 import java.util.stream.IntStream
 import kotlin.streams.toList
 
@@ -20,6 +21,8 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>){
 
+        val startTime = System.nanoTime()
+
         val results = scrapeAndSerializeDumps()
 
         results.forEach { Serializer.serialize("${Dumps.BASE_PATH}/$it", it) }
@@ -29,6 +32,14 @@ object Main {
         results.forEach { pageIds.addAll(it.getPageIds()) }
 
         scrapeAndSerializeComments(*pageIds.toTypedArray())
+
+        val endTime = System.nanoTime()
+
+        val s = TimeUnit.NANOSECONDS.toSeconds(endTime-startTime)
+
+        println("###################################################")
+        println("#          TOTAL RUN TIME WAS $s SECONDS           #")
+        println("###################################################")
     }
 
     /**
