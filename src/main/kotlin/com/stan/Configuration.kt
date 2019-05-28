@@ -12,7 +12,8 @@ import com.google.gson.reflect.TypeToken
  *
  * @param threadCount the numbers of threads that the scraper can use.
  * @param delayBetweenPageScrapingIterations the delay between each consecutive scrape batch (in millis).
- *
+ * @param startPage the starting page (inclusive)
+ * @param endPage the end page (inclusive)
  */
 data class Configuration(@Expose val threadCount: Int = 1,
                          @Expose val delayBetweenPageScrapingIterations : Long = 1_000L,
