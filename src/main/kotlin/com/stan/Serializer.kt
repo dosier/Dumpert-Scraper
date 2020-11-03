@@ -16,7 +16,7 @@ import java.nio.file.Paths
  * @see SAVE_PATH   the base [Path] to store serialized files at.
  * @see GSON        the [Gson] implementation used to format the data.
  *
- * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
+ * @author  Stan van der Bend
  * @since   2019-05-10
  * @version 1.0
  */

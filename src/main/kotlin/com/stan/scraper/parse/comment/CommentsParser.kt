@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element
  *
  * @param pageId the id of the targeted page.
  *
- * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
+ * @author  Stan van der Bend
  * @since   2019-05-09
  * @version 1.0
  */

@@ -12,7 +12,7 @@ import java.util.concurrent.Callable
  * @param url the [URL] to grab the page at.
  * @param parser the [Parser] used to parse the grabbed page.
  *
- * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
+ * @author  Stan van der Bend
  * @since   2019-02-08
  * @version 1.0
  */

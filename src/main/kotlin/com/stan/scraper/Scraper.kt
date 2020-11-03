@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * @see Configuration.threadCount the number of threads the [executorService] is allowed to work with.
  * @see Configuration.delayBetweenPageScrapingIterations the amount of millis to wait between [scraping] iterations.
  *
- * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
+ * @author  Stan van der Bend
  * @since   2019-05-09
  * @version 1.0
  */

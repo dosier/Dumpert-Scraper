@@ -8,7 +8,7 @@ import java.net.URL
  *
  * @param urlAppendix the value appended to the base url (to target a specific page).
  *
- * @author  Stan van der Bend (https://www.rune-server.ee/members/StanDev/)
+ * @author  Stan van der Bend
  * @since   2019-02-08
  * @version 1.0
  */
