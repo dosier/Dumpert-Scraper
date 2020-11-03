@@ -9,9 +9,13 @@ import com.stan.scraper.parse.comment.Comments
  * @since   2019-05-22
  * @version 1.0
  */
-class WordEvaluation(var occurences: Int, var kudoScore: Int, var karmaScore : Int) {
+class WordEvaluator(
+    var occurences: Int,
+    var kudoScore: Int,
+    var karmaScore : Int
+) : CommentEvaluator {
 
-    fun include(comment: Comments.Comment){
+    override fun evaluate(comment: Comments.Comment){
         val positive = comment.kudos >= 0
         if(positive)
             kudoScore += comment.kudos
@@ -20,7 +24,7 @@ class WordEvaluation(var occurences: Int, var kudoScore: Int, var karmaScore : I
         occurences++
     }
 
-    fun calculateScore() : Int {
+    override fun getScore() : Int {
         return (karmaScore + kudoScore) / occurences
     }
 
@@ -29,9 +33,9 @@ class WordEvaluation(var occurences: Int, var kudoScore: Int, var karmaScore : I
     }
 
     companion object {
-        fun create(firstComment : Comments.Comment) : WordEvaluation {
+        fun create(firstComment : Comments.Comment) : WordEvaluator {
             val positive = firstComment.kudos >= 0
-            return WordEvaluation(1, if(positive) firstComment.kudos else 0, if(!positive) firstComment.kudos else 0)
+            return WordEvaluator(1, if(positive) firstComment.kudos else 0, if(!positive) firstComment.kudos else 0)
         }
     }
 }

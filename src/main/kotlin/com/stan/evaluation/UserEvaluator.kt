@@ -9,11 +9,13 @@ import com.stan.scraper.parse.comment.Comments
  * @since   2019-05-23
  * @version 1.0
  */
-class UserEvaluation(var kudoScore: Int = 0, var karmaScore : Int = 0, var commentCount: Int = 0) {
+class UserEvaluator(
+    var kudoScore: Int = 0,
+    var karmaScore : Int = 0,
+    var commentCount: Int = 0
+) : CommentEvaluator {
 
-    val comments = ArrayList<Comments.Comment>()
-
-    fun include(comment : Comments.Comment){
+    override fun evaluate(comment : Comments.Comment){
         if(comment.kudos >= 0)
             kudoScore += comment.kudos
         else
@@ -21,8 +23,5 @@ class UserEvaluation(var kudoScore: Int = 0, var karmaScore : Int = 0, var comme
         commentCount++
     }
 
-    fun getScore() : Int {
-        return kudoScore + karmaScore
-    }
-
+    override fun getScore() = kudoScore + karmaScore
 }

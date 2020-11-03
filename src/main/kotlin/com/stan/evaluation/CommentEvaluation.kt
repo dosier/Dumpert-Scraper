@@ -1,20 +1,20 @@
-import com.stan.evaluation.UserEvaluation
-import com.stan.evaluation.WordEvaluation
+package com.stan.evaluation
+
 import com.stan.scraper.parse.comment.Comments
 import com.stan.scraper.parse.dump.Dumps
 import java.util.regex.Pattern
 import kotlin.math.min
-import org.junit.Test as test
-/**
- * TODO: add documentation
- *
- * @author  Stan van der Bend
- * @since   2019-05-28
- * @version 1.0
- */
-class EvaluationTest {
 
-    @test fun evaluateWordStats() {
+object CommentEvaluation {
+
+    @JvmStatic
+    fun main(args: Array<String>) {
+//        evaluateUserStats()
+//        evaluateWordStats()
+    }
+
+
+    private fun evaluateWordStats() {
         val delimiters = charArrayOf(' ', ',', '.', '?', '!', ':', ';')
 
         val minOccurences = 10
@@ -23,7 +23,7 @@ class EvaluationTest {
         val pageStart = 1
         val pageEnd = 1000
 
-        val evaluatedWords = HashMap<String, WordEvaluation>()
+        val evaluatedWords = HashMap<String, WordEvaluator>()
 
         println("Loaded dump ids, continue loading comments now...")
 
@@ -40,9 +40,9 @@ class EvaluationTest {
                         next.content.split(*delimiters).map { it.toLowerCase().trim() }.forEach {
 
                             if(evaluatedWords[it] != null){
-                                evaluatedWords[it]?.include(next)
+                                evaluatedWords[it]?.evaluate(next)
                             } else
-                                evaluatedWords[it] = WordEvaluation.create(next)
+                                evaluatedWords[it] = WordEvaluator.create(next)
 
                         }
 
@@ -59,9 +59,9 @@ class EvaluationTest {
                                 nextSub.content.split(*delimiters).map { it.toLowerCase().trim() }.forEach {
 
                                     if(evaluatedWords[it] != null){
-                                        evaluatedWords[it]?.include(next)
+                                        evaluatedWords[it]?.evaluate(next)
                                     } else
-                                        evaluatedWords[it] = WordEvaluation.create(next)
+                                        evaluatedWords[it] = WordEvaluator.create(next)
 
                                 }
                             }
@@ -73,17 +73,17 @@ class EvaluationTest {
         evaluatedWords.entries
             .filter { it.value.occurences >= minOccurences}
             .filter { !Pattern.matches("\\d+-\\d+-\\d+", it.key) }
-            .sortedByDescending { it.value.calculateScore() }
+            .sortedByDescending { it.value.getScore() }
             .subList(0, min(maxResults, evaluatedWords.entries.size))
-            .forEach { println("word '${it.key}'\n \t score[+${it.value.kudoScore}, ${it.value.karmaScore}] = ${it.value.calculateScore()}\n \t occurrences = ${it.value.occurences}") }
+            .forEach { println("word '${it.key}'\n \t score[+${it.value.kudoScore}, ${it.value.karmaScore}] = ${it.value.getScore()}\n \t occurrences = ${it.value.occurences}") }
     }
 
-    @test fun evaluateUserStats() {
+    private fun evaluateUserStats() {
 
         val pageStart = 1
         val pageEnd = 10
 
-        val evaluatedUsers = HashMap<String, UserEvaluation>()
+        val evaluatedUsers = HashMap<String, UserEvaluator>()
 
         println("Loaded dump ids, continue loading comments now...")
 
@@ -106,12 +106,12 @@ class EvaluationTest {
 
                                 val nextSub = subIt.next()
 
-                                evaluatedUsers.putIfAbsent(nextSub.user, UserEvaluation())
-                                evaluatedUsers[nextSub.user]?.include(nextSub)
+                                evaluatedUsers.putIfAbsent(nextSub.user, UserEvaluator())
+                                evaluatedUsers[nextSub.user]?.evaluate(nextSub)
                             }
                         }
-                        evaluatedUsers.putIfAbsent(next.user, UserEvaluation())
-                        evaluatedUsers[next.user]?.include(next)
+                        evaluatedUsers.putIfAbsent(next.user, UserEvaluator())
+                        evaluatedUsers[next.user]?.evaluate(next)
                     }
                 }
             }
